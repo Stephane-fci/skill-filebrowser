@@ -224,6 +224,42 @@ Markdown, images, PDFs, and text files render inline in FileBrowser. Users click
 
 When the agent creates or updates a file that team members should see, include the direct URL in the message (Slack, Discord, etc.): *"Research complete — view the personas here: [URL]"*
 
+## Scope Strategy Decision
+
+Choose the right scope for your team user based on your situation:
+
+| Scenario | Recommended Scope | Why |
+|----------|------------------|-----|
+| Client team (external people) | `/spaces` or `/shared` | Hide agent internals, limit exposure |
+| Internal team (trusted collaborators) | `/` with `hideDotfiles=true` | Full visibility, simpler URLs, dotfiles hide credentials |
+| Solo use (just you + agent) | Skip `team` user entirely | Admin account is enough |
+
+**If using scope `/` for team:** Agent files like `SOUL.md`, `RULES.md`, `MEMORY.md`, `skills/`, `memory/` will be visible. Credentials in `.openclaw/` are hidden by `hideDotfiles=true`. If agent internals must be hidden, use the "Rules" system to block specific paths:
+
+```bash
+# Block paths using FileBrowser Rules (applied per-user via API or database)
+# Rules use regex patterns. These block access but don't hide from listing.
+# For true hiding, use restricted scope instead.
+```
+
+**Recommendation for most agent setups:** Start with scope `/` + `hideDotfiles=true`. It's simpler, URLs work the same for everyone, and the risk is low (team sees agent config files, but those aren't secret — credentials live in dotfiles which are hidden). Restrict scope only when working with external clients or untrusted users.
+
+## Team Onboarding
+
+When a human asks you to give someone access to FileBrowser, follow this sequence:
+
+1. **Explain what it is** — "A web file browser connected to my workspace. Browse, read, and download anything I create without asking me to paste it."
+2. **Share the URL** — The FileBrowser URL
+3. **Warn about Cloudflare Access** — "You'll first see a Cloudflare email verification screen. Enter your work email, check inbox (and spam), enter the code."
+4. **Share credentials** — Username and password (only after Cloudflare verification works)
+5. **Explain permissions** — What they can and can't do
+6. **Share a specific useful link** — Don't just say "go browse." Give them a direct link to something relevant to their work.
+
+**Common onboarding issues:**
+- "I didn't get the code" → Their email isn't in the Cloudflare Access allow list. Add it via API or dashboard.
+- "This location can't be reached" → URL path doesn't match their user scope. See Sharing Files section.
+- "I can't edit" → Check user permissions with `users update` CLI.
+
 ## Troubleshooting
 
 | Problem | Cause | Fix |
@@ -234,6 +270,9 @@ When the agent creates or updates a file that team members should see, include t
 | `baseURL` not working | Config not set or service not restarted | Stop → `config set --baseURL` → start |
 | Quantum binary panics | Missing embedded frontend | Use original FileBrowser, not Quantum fork |
 | Team renamed a file, agent broke | Rename permission was enabled | Disable rename: `users update <user> --perm.rename=false` |
+| "This location can't be reached" | URL path doesn't match user scope | If user scope is `/spaces`, omit `spaces/` from URL. If scope is `/`, include full path. |
+| Cloudflare code not arriving | Email not in Access allow list | Add the email to the Cloudflare Access policy (API or dashboard) |
+| Cloudflare code in spam | Normal Cloudflare behavior | Tell user to check spam/junk folder first |
 
 ## Self-Improvement
 
@@ -262,4 +301,7 @@ Update this skill with findings:
 - **Self-signed certs work with Cloudflare Full mode.** No need for Let's Encrypt if using Cloudflare proxy. Set SSL mode to "Full" (not "Full Strict").
 - **fail2ban works with journald backend.** FileBrowser logs failed logins to journald (not a file). Use `backend = systemd` and `journalmatch = _SYSTEMD_UNIT=filebrowser.service` in the jail config.
 - **FileBrowser runs as the agent user.** This means file edits via FileBrowser are indistinguishable from agent edits in git. Both show as the same user. Not a problem in practice — team edits go to `/spaces` which the agent rarely force-resets.
-- **Direct URLs are relative to user scope, not workspace root.** If team user scope is `/spaces`, their URLs must OMIT `spaces/` from the path. A link like `/files/spaces/cushie/` given to a team user resolves to `/spaces/spaces/cushie/` → 404. Correct team link: `/files/cushie/`. This is the #1 gotcha when sharing links — always consider WHO is clicking.
+- **Direct URLs are relative to user scope, not workspace root.** If team user scope is `/spaces`, their URLs must OMIT `spaces/` from the path. A link like `/files/spaces/cushie/` given to a team user resolves to `/spaces/spaces/cushie/` → 404. Correct team link: `/files/cushie/`. This is the #1 gotcha when sharing links — always consider WHO is clicking. **Simplest fix: give all users scope `/` so URLs are identical for everyone.**
+- **Start with scope `/` for trusted teams.** The original instinct to restrict team to `/spaces` causes URL mismatches and complexity. For trusted internal teams, scope `/` with `hideDotfiles=true` is simpler and less error-prone. Reserve restricted scopes for external clients.
+- **Onboarding flow matters.** Don't just dump credentials. Walk through: what it is → URL → Cloudflare verification → credentials → permissions → one useful direct link. The Cloudflare email step confuses people who expect a normal login page.
+- **Agent should share direct links proactively.** After creating files, include the FileBrowser URL in the chat message. "Here's the research" + a link is 10x better than "I saved it to the workspace." Make the files discoverable, not just accessible.
