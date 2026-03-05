@@ -25,27 +25,27 @@ The **execute permission** allows running arbitrary shell commands. **Always dis
 
 FileBrowser permissions are **per-user, not per-folder**. Within their scope, all permissions apply uniformly.
 
-| Permission | Recommended for Admin | Recommended for Team | Recommended for Viewer |
-|------------|----------------------|---------------------|----------------------|
+| Permission | Recommended for Admin | Recommended for Collaborator | Recommended for Viewer |
+|------------|----------------------|------------------------------|----------------------|
 | admin | ✅ | ❌ | ❌ |
 | execute | ❌ (disable globally) | ❌ | ❌ |
 | create | ✅ | ✅ | ❌ |
-| rename | ✅ | ❌ (breaks file references) | ❌ |
+| rename | ✅ | ❌ (breaks agent file references) | ❌ |
 | modify | ✅ | ✅ | ❌ |
-| delete | ✅ | ❌ (git recovery exists but prevention is better) | ❌ |
+| delete | ✅ | ❌ (prevention > recovery) | ❌ |
 | share | ✅ | ✅ | ❌ |
 | download | ✅ | ✅ | ✅ |
 
-## Scope Strategy for Agent Workspaces
+## Scope Strategy
 
-- **Admin user** → scope `/` — full workspace access including agent internals
-- **Team user** → scope `/spaces` or `/shared` — only the collaboration folder, agent internals hidden
-- **Viewer user** → scope `/` with read-only permissions — can see everything, change nothing
+- **Admin** → scope `/` — full workspace access
+- **Collaborator** → scope `/` with `hideDotfiles=true` — sees workspace files, agent credentials hidden in dotfiles
+- **Restricted user** → scope set to a subfolder (e.g. `/shared`, `/output`) — only sees that folder
+- **Viewer** → scope `/` with read-only permissions — sees everything, changes nothing
 
-Why hide agent internals from team:
-- SOUL.md, RULES.md, MEMORY.md contain agent configuration
-- skills/ contains proprietary workflows
-- credentials/ must never be exposed (though scoped users can't reach parent dirs anyway)
+**Recommendation:** Start with scope `/` + `hideDotfiles=true` for trusted users. Restricting scope causes URL path mismatches (see SKILL.md "Sharing Files"). Only restrict scope for untrusted or external users.
+
+Agent credentials typically live in dotfiles (e.g. `.openclaw/credentials/`) which are hidden when `hideDotfiles=true`.
 
 ## Cloudflare Access Setup via API
 
