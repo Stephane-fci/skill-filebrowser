@@ -208,11 +208,17 @@ Share direct links to files when team members ask to see work:
 
 ## Sharing Files
 
-Direct URL pattern: `https://{host}/{base_url}/files/{relative_path}`
+Direct URL pattern: `https://{host}/{base_url}/files/{path_relative_to_user_scope}`
 
-Examples:
-- Folder: `https://workspace.example.com/filebrowser/files/spaces/brand-a/`
-- File: `https://workspace.example.com/filebrowser/files/spaces/brand-a/research/INDEX.md`
+**⚠️ CRITICAL: The URL path is relative to the user's scope, NOT the workspace root.**
+
+If a user's scope is `/spaces`, they see `/spaces` as their root `/`. So:
+- **Admin** (scope `/`): `https://example.com/filebrowser/files/spaces/brand-a/`
+- **Team** (scope `/spaces`): `https://example.com/filebrowser/files/brand-a/` (NO `spaces/` prefix!)
+
+If you share a `/files/spaces/brand-a/` URL with a team user whose scope is `/spaces`, FileBrowser looks for `/spaces/spaces/brand-a/` → "This location can't be reached."
+
+**Always ask yourself: who will click this link?** Then build the URL relative to THEIR scope.
 
 Markdown, images, PDFs, and text files render inline in FileBrowser. Users click, read, done.
 
@@ -256,3 +262,4 @@ Update this skill with findings:
 - **Self-signed certs work with Cloudflare Full mode.** No need for Let's Encrypt if using Cloudflare proxy. Set SSL mode to "Full" (not "Full Strict").
 - **fail2ban works with journald backend.** FileBrowser logs failed logins to journald (not a file). Use `backend = systemd` and `journalmatch = _SYSTEMD_UNIT=filebrowser.service` in the jail config.
 - **FileBrowser runs as the agent user.** This means file edits via FileBrowser are indistinguishable from agent edits in git. Both show as the same user. Not a problem in practice — team edits go to `/spaces` which the agent rarely force-resets.
+- **Direct URLs are relative to user scope, not workspace root.** If team user scope is `/spaces`, their URLs must OMIT `spaces/` from the path. A link like `/files/spaces/cushie/` given to a team user resolves to `/spaces/spaces/cushie/` → 404. Correct team link: `/files/cushie/`. This is the #1 gotcha when sharing links — always consider WHO is clicking.
