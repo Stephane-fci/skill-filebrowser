@@ -1,15 +1,21 @@
 ---
 name: filebrowser
-description: "Install and configure FileBrowser as a web-based file manager for an AI agent workspace. Gives humans a browser UI to view, edit, and download files the agent produces — without SSH access or technical knowledge. Use when: (1) setting up FileBrowser from scratch on a VPS, (2) adding users or changing permissions, (3) configuring security (Cloudflare Access, fail2ban), (4) sharing direct file URLs with humans, (5) troubleshooting FileBrowser issues. NOT for: general file operations (use read/write/edit tools), or when the human just needs to see a single file (send it directly)."
+description: "Use when the user asks to see a file, wants a link, asks where to edit something, needs to browse the workspace, or asks about FileBrowser setup."
 ---
 
-# FileBrowser — Agent Workspace File Manager
+# FileBrowser
 
-Give your human a web UI to browse, edit, and download files you produce — without SSH or technical knowledge.
+Web file manager for agent workspaces. Gives humans a browser UI to view, edit, and download files the agent produces.
 
-**What it is:** FileBrowser is a self-hosted web file manager. Install it, point it at your workspace, and your human gets a clean browser interface at a URL like `workspace.example.com/filebrowser`.
+## When This Skill Triggers
 
-**Why agents need this:** You create files (research, reports, configs, images). Your human needs to see them. Instead of copy-pasting content into chat or attaching files, give them a URL. They browse, you keep working.
+**Already installed:** The user asks to see a file, wants a direct link, asks "where can I edit this?", "can I see the report?", "show me what you made." → Read CONTEXT.md for URLs and share direct links.
+
+**Not installed:** The user wants to set up workspace file access for the first time. → Follow the setup steps below.
+
+**Direct file URL pattern:** `https://{host}/{base_url}/files/{path}`
+
+After creating or updating files, proactively share the direct URL. A link is 10x more useful than "I saved it to the workspace."
 
 ## Prerequisites
 
@@ -254,21 +260,7 @@ When your human asks you to give someone access, follow this sequence:
 | Cloudflare code not arriving | Email not in allow list | Add email to Cloudflare Access policy |
 | Cloudflare code in spam | Normal behavior | Check spam/junk folder |
 
-## Self-Improvement
-
-After every execution of this skill, evaluate:
-1. Did the installation complete without errors?
-2. Were there environment-specific issues (OS version, nginx version, permissions)?
-3. Did the human struggle with any step?
-4. Were there security concerns not covered?
-
-Update this skill with findings:
-- Fix incorrect commands or outdated URLs
-- Add new gotchas and their solutions
-- Update security references if new CVEs are discovered
-- Append findings to Lessons Learned below
-
-## Lessons Learned
+## Proven Knowledge
 
 - **Use original FileBrowser, not Quantum.** Quantum fork has better features (OIDC, search) but the standalone binary panics without Docker — doesn't embed the frontend. Original binary is self-contained.
 - **`config set` defaults only affect new users.** Existing users must be updated individually with `users update`. Not obvious — causes confusion when settings "don't apply."
@@ -285,3 +277,32 @@ Update this skill with findings:
 - **Scope `/` with `hideDotfiles=true` is the simplest setup.** Restricting scope causes URL mismatches and complexity. For trusted users, full scope with hidden dotfiles is simpler and less error-prone. Reserve restricted scopes for untrusted/external users.
 - **Onboarding flow matters.** Don't dump credentials. Walk through: what it is → URL → Cloudflare warning → credentials → permissions → one useful direct link. The Cloudflare email step confuses people who expect a normal login page.
 - **Share direct links proactively.** After creating files, include the FileBrowser URL in the chat message. "Here's the report" + a link is far more useful than "I saved it to the workspace."
+- **Multiple instances on same VPS.** Use different ports and separate systemd service names (e.g., `filebrowser-jess`, `filebrowser-lina`). Each gets its own database file. Share the same Nginx server block with different location paths.
+- **`auth_basic off` in FileBrowser location blocks.** When the Nginx server block has basic auth for other paths, add `auth_basic off;` inside the FileBrowser location block to prevent double-auth.
+
+## Before Every Execution
+
+Before doing anything, read these files in this skill's directory:
+1. **CONTEXT.md** — local configuration, tools, and business-specific details
+2. **LEARNINGS.md** — accumulated knowledge from past runs (read in full)
+3. **LOGS.md** — recent execution history (read the last ~2000 characters only — older logs are kept for the record but don't need to be loaded every time)
+
+These files contain knowledge that makes this run better than the last one.
+
+## How This Skill Improves
+
+This skill is a living system. It gets better every time it runs.
+
+**After each execution:**
+1. Append to LOGS.md: what was triggered, what actions were taken, what the outcome was
+2. Update CONTEXT.md if local state changed (new credentials, new service connected, status changes, new IDs discovered)
+3. If something noteworthy was learned — a new pattern, a failure, an edge case, a better approach — append to LEARNINGS.md with today's date
+
+**If a deeper change is needed** (fixing a workflow step, updating a reference, adding a script, correcting an error in SKILL.md), you can make the change directly. But you MUST document it fully in LEARNINGS.md:
+- What was the problem
+- What was discovered
+- What was changed (which files, what specifically)
+- What was created (new files, where they are)
+- Why it works better
+
+This documentation is how the human merges improvements across agents into the canonical skill version. A change without a LEARNINGS.md entry is a silent fork.
