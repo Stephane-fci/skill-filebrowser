@@ -20,7 +20,7 @@ Agent-specific FileBrowser configuration.
 |------|----------|-------|------|
 | stephane | `dBwE6WIoaxFFCmJ8qNTk` | `/` | admin (full access) |
 
-**Cloudflare Access:** `steph@sfrance.co`
+**Cloudflare Access:** `stephane.franceschini@gmail.com`
 
 ---
 
