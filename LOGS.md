@@ -64,3 +64,9 @@
 - Actions: stopped FileBrowser briefly for DB-safe user updates, created/verified a separate `stephane-admin` break-glass account, changed the normal `stephane` account to non-admin with execute/rename/delete disabled, and restarted the service.
 - Credential hygiene: removed plaintext FileBrowser passwords from `platform-filebrowser/CONTEXT.md` and redacted legacy plaintext copies found in workspace notes/logs/memory. Passwords live only in `~/.openclaw/credentials/filebrowser.json`.
 - Outcome: daily browsing/upload/editing can continue, but the normal account can no longer move or delete top-level workspace folders.
+
+## 2026-04-26 — Fleet FileBrowser hardening after John workspace incident
+- Trigger: John's `/projects/` folder move showed that FileBrowser rename/admin access can move canonical workspace folders outside agent guardrails.
+- Actions: audited Caesar, Jess, Lina, and Francesca FileBrowser DB users; changed daily human accounts to non-admin with execute/rename/delete disabled; created break-glass admin accounts with execute disabled; stored generated break-glass passwords only in each agent's `.openclaw/credentials/filebrowser.json`.
+- Caesar detail: corrected `team` runtime scope to `/spaces` to match the credential file and reduce access surface.
+- Outcome: active fleet daily accounts can browse/upload/edit/share/download but can no longer rename/delete top-level workspace folders.

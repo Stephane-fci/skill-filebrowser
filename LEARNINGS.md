@@ -23,3 +23,9 @@ Append new learnings below with today's date.
 - FileBrowser's rename permission can move entire top-level folders, including canonical workspace folders. This bypasses `WORKSPACE.md` because it happens through the browser UI, not through agent reasoning.
 - Daily human accounts should not have `rename`, `delete`, `execute`, or admin permissions. Keep a separate break-glass admin account for intentional structural changes only.
 - For agent workspaces, protect canonical folders (`projects`, `spaces`, `skills`, `memory`, root boot files) with permissions or operational rules. If FileBrowser cannot do path-specific read-only protection, prefer safe daily accounts over full admin for normal browsing/uploading.
+
+## 2026-04-26 — Credential files can drift from live FileBrowser DB state
+
+- During fleet hardening, Caesar's credential file described the `team` account as scoped to `/spaces`, but the live FileBrowser DB still had scope `/`.
+- Treat credential files as documentation plus secret storage, not runtime truth. Verify live DB state with `filebrowser users ls --database ...` before claiming permissions/scopes.
+- When hardening, update both the DB and the credential description so future agents do not trust stale access notes.
