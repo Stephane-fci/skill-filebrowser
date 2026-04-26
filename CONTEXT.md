@@ -16,9 +16,12 @@ Agent-specific FileBrowser configuration.
 
 **Users:**
 
-| User | Password | Scope | Role |
-|------|----------|-------|------|
-| stephane | `dBwE6WIoaxFFCmJ8qNTk` | `/` | admin (full access) |
+Passwords live only in `~/.openclaw/credentials/filebrowser.json`. Do not store or repeat FileBrowser passwords in workspace files.
+
+| User | Scope | Role |
+|------|-------|------|
+| stephane | `/` | safe daily account: view, download, upload/create, edit/modify, share; no admin, execute, rename, or delete |
+| stephane-admin | `/` | break-glass admin for intentional structural changes; execute disabled |
 
 **Cloudflare Access:** `stephane.franceschini@gmail.com`
 
@@ -33,5 +36,7 @@ Agent-specific FileBrowser configuration.
 | **Jess** | `judes.sfrance.co/jess/filebrowser` | ✅ Live |
 | **Lina** | `judes.sfrance.co/lina/filebrowser` | ✅ Live |
 | **Francesca** | `sally.sfrance.co/filebrowser` | ✅ Live |
+| **Sentinelle** | `sentinelle.sfrance.co/filebrowser` | ✅ Live |
 
-All instances share the same security stack: Cloudflare Access (email wall) → FileBrowser login → fail2ban.
+Most instances use: Cloudflare Access (email wall) → FileBrowser login → fail2ban.
+**Sentinelle exception:** direct FileBrowser login only, no Cloudflare Access, plus fail2ban.
