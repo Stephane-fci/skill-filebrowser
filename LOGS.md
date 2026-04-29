@@ -70,3 +70,13 @@
 - Actions: audited Caesar, Jess, Lina, and Francesca FileBrowser DB users; changed daily human accounts to non-admin with execute/rename/delete disabled; created break-glass admin accounts with execute disabled; stored generated break-glass passwords only in each agent's `.openclaw/credentials/filebrowser.json`.
 - Caesar detail: corrected `team` runtime scope to `/spaces` to match the credential file and reduce access surface.
 - Outcome: active fleet daily accounts can browse/upload/edit/share/download but can no longer rename/delete top-level workspace folders.
+
+## 2026-04-28 — Maurice FileBrowser public protected setup
+- Trigger: Stephane said to continue Maurice production-gate work after GitHub backup.
+- Actions: Installed Nginx on Maurice, created self-signed cert for `maurice.sfrance.co`, proxied `/filebrowser` to local FileBrowser on `127.0.0.1:8085`, created proxied Cloudflare DNS A record, created Cloudflare Access app `Maurice FileBrowser` with Stephane-only policy, and restricted UFW `80/443` to Cloudflare IP ranges only.
+- Outcome: `https://maurice.sfrance.co/filebrowser/` redirects to Cloudflare Access; root returns 404; direct IP access from John timed out. Maurice TOOLS.md updated and pushed to `lifely-abundance/maurice-brain` commit `ef30e46`.
+
+## 2026-04-29 — Cornelia FileBrowser public protected setup
+- Trigger: Stephane said “let's go” for Cornelia deployment Phase 8 operational infrastructure.
+- Actions: Installed original FileBrowser v2.63.2 on `lifely-cc-agent`, rooted it at `/home/cornelia/clawd`, created safe daily `stephane` and break-glass `stephane-admin` users with passwords stored only in `/home/cornelia/.openclaw/credentials/filebrowser.json`, proxied `/filebrowser` through Nginx at `cornelia.sfrance.co`, created proxied Cloudflare DNS and a `Cornelia FileBrowser` Access app with Stephane-only policy, enabled the FileBrowser fail2ban jail, and restricted UFW HTTP/HTTPS to Cloudflare IP ranges.
+- Outcome: `https://cornelia.sfrance.co/filebrowser/` redirects to Cloudflare Access, local FileBrowser login returns HTTP 200, root returns 404, and direct IP access to ports 80/443 times out. Cornelia `TOOLS.md` was updated with the URL and credential path.
