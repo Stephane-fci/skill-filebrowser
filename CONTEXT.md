@@ -38,6 +38,7 @@ Passwords live only in `~/.openclaw/credentials/filebrowser.json`. Do not store 
 | **Francesca** | `sally.sfrance.co/filebrowser` | ✅ Live |
 | **Sentinelle** | `sentinelle.sfrance.co/filebrowser` | ✅ Live |
 | **Cornelia** | `cornelia.sfrance.co/filebrowser` | ✅ Live |
+| **Maurice** | `maurice.sfrance.co/filebrowser` | ✅ Live |
 
 Most instances use: Cloudflare Access (email wall) → FileBrowser login → fail2ban.
 **Sentinelle exception:** direct FileBrowser login only, no Cloudflare Access, plus fail2ban.

@@ -80,3 +80,13 @@
 - Trigger: Stephane said “let's go” for Cornelia deployment Phase 8 operational infrastructure.
 - Actions: Installed original FileBrowser v2.63.2 on `lifely-cc-agent`, rooted it at `/home/cornelia/clawd`, created safe daily `stephane` and break-glass `stephane-admin` users with passwords stored only in `/home/cornelia/.openclaw/credentials/filebrowser.json`, proxied `/filebrowser` through Nginx at `cornelia.sfrance.co`, created proxied Cloudflare DNS and a `Cornelia FileBrowser` Access app with Stephane-only policy, enabled the FileBrowser fail2ban jail, and restricted UFW HTTP/HTTPS to Cloudflare IP ranges.
 - Outcome: `https://cornelia.sfrance.co/filebrowser/` redirects to Cloudflare Access, local FileBrowser login returns HTTP 200, root returns 404, and direct IP access to ports 80/443 times out. Cornelia `TOOLS.md` was updated with the URL and credential path.
+
+## 2026-04-29 — Maurice FileBrowser password aligned with Caesar
+- Trigger: Stephane asked to set Maurice's FileBrowser password to the same daily `stephane` password used for Caesar FileBrowser.
+- Actions: Read Caesar's stored FileBrowser credential from the secure Lifely VPS credential file without printing it, updated Maurice's `stephane` FileBrowser user via the FileBrowser CLI, preserved safe daily-user permissions, updated Maurice's secure credential JSON, and verified local login on Maurice returned HTTP 200.
+- Outcome: Maurice FileBrowser daily `stephane` login now uses the same stored password as Caesar. No password was written to workspace docs or shown in chat/logs.
+
+## 2026-05-01 — Cornelia FileBrowser password aligned with John
+- Trigger: Stephane asked to make Cornelia FileBrowser daily user `stephane` use the same password as John's FileBrowser daily user.
+- Actions: Read John's secure credential file without printing the password, updated Cornelia's FileBrowser DB user, preserved daily safe permissions, updated Cornelia's secure credential JSON, restarted FileBrowser, and verified local login HTTP `200`.
+- Outcome: Cornelia `stephane` FileBrowser password now matches John's daily FileBrowser password. No secret was printed or stored in workspace docs.
