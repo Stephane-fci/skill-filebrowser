@@ -90,3 +90,8 @@
 - Trigger: Stephane asked to make Cornelia FileBrowser daily user `stephane` use the same password as John's FileBrowser daily user.
 - Actions: Read John's secure credential file without printing the password, updated Cornelia's FileBrowser DB user, preserved daily safe permissions, updated Cornelia's secure credential JSON, restarted FileBrowser, and verified local login HTTP `200`.
 - Outcome: Cornelia `stephane` FileBrowser password now matches John's daily FileBrowser password. No secret was printed or stored in workspace docs.
+
+## 2026-05-13 — Shared Little Lifely ads asset links
+- **Trigger:** Stephane asked for links to the previously identified Little Lifely ad candidates.
+- **Actions:** Loaded FileBrowser context and prepared direct links to the research doc plus archived creative assets.
+- **Outcome:** Shared FileBrowser links for local creative analysis/video/carousel assets and external Drive/Dropbox/Figma source links.
