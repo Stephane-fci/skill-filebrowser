@@ -95,3 +95,68 @@
 - **Trigger:** Stephane asked for links to the previously identified Little Lifely ad candidates.
 - **Actions:** Loaded FileBrowser context and prepared direct links to the research doc plus archived creative assets.
 - **Outcome:** Shared FileBrowser links for local creative analysis/video/carousel assets and external Drive/Dropbox/Figma source links.
+
+## 2026-05-16 — Lifely Mermaid diagram links troubleshooting
+- Trigger: Stephane said the FileBrowser link did not work after Mermaid database diagrams were shared.
+- Actions: Loaded FileBrowser skill context, verified John FileBrowser root is `/root/clawd`, confirmed the files exist, service is active, `stephane` scope is `/`, and local FileBrowser API can resolve the diagram paths.
+- Outcome: Direct path format is technically correct, but deep links may still be awkward after Cloudflare/FileBrowser login. Prefer attaching files directly plus sharing the containing folder link when a direct deep link fails.
+
+## 2026-05-16 — Fixed John's blank FileBrowser frontend
+- Trigger: Stephane reported John's FileBrowser appeared blank and emphasized FileBrowser is critical to his workflow.
+- Actions: Verified service, credentials, user scope, public API access, and public browser behavior. Found fresh browser worked but static assets were cacheable for 24h. Patched Nginx `/filebrowser/` route in `/etc/nginx/sites-available/ugc-studio` with cache-busting/no-store behavior, tested `nginx -t`, reloaded Nginx, and verified public login + media folder browsing with Puppeteer.
+- Outcome: John's FileBrowser should now force a fresh frontend load from `https://studio.sfrance.co/filebrowser/`; direct folder/file links should work again after reload.
+
+## 2026-05-16 — Moved John's FileBrowser route to `/john-files`
+- Trigger: Stephane still saw the blank spinner after cache-busting `/filebrowser`, including on Windows.
+- Actions: Backed up Nginx config and FileBrowser DB, stopped FileBrowser, changed baseURL to `/john-files`, updated Nginx to redirect old `/filebrowser` to `/john-files` and proxy/cache-bust the new route, tested Nginx, restarted/reloaded services, and verified public login/folder browsing with Puppeteer.
+- Outcome: New working URL is `https://studio.sfrance.co/john-files/`; direct links use `https://studio.sfrance.co/john-files/files/{path}`. Updated `TOOLS.md` and FileBrowser skill context.
+
+## 2026-05-16 — Restored John's FileBrowser canonical URL
+- Trigger: Stephane confirmed the fixed `/john-files` route worked and asked to move FileBrowser back to the original URL.
+- Actions: Backed up Nginx config and FileBrowser DB, restored FileBrowser baseURL to `/filebrowser`, updated Nginx so `/filebrowser/` is canonical while preserving disk-safe `proxy_buffering off`, `proxy_max_temp_file_size 0`, no-store headers, and cache-busted JS/CSS. Added compatibility redirects from `/john-files/` back to `/filebrowser/`. Purged Cloudflare cache after an old redirect persisted publicly. Updated `TOOLS.md` and FileBrowser context back to `/filebrowser`.
+- Outcome: Canonical URL is again `https://studio.sfrance.co/filebrowser/`; static JS/CSS assets download fully; disk remains at ~89% used after safe cache cleanup.
+
+## 2026-05-17 — Little Lifely generated images ZIP link + cleanup
+- Trigger: Stephane asked for a ZIP containing all 40 generated Little Lifely Nano mixed blue-bed images and asked to delete disk copies afterward.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-nano-mixed-blue-r1-40-images.zip`, verified it contains 40 JPGs, removed the local extracted run folder and the remote Lifely workspace run folder.
+- Outcome: Only the ZIP remains on John's workspace for download via FileBrowser; loose generated image copies were removed from local and remote disk.
+
+## 2026-05-17 — All Little Lifely generated images bundled and loose copies removed
+- Trigger: Stephane asked for all generated Little Lifely images from previous batches, not only the latest 40.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-all-generated-images-2026-05-17-97-images.zip`, verified it contains 97 JPGs across the five generated batches, then removed local loose run folders, the previous 40-image ZIP, and matching remote Lifely workspace run folders.
+- Outcome: Only the all-in ZIP remains in John's FileBrowser path for download; loose generated image folders were cleaned from disk.
+
+## 2026-05-17 — Little Lifely pink girls batch ZIP link
+- Trigger: Stephane asked to continue generation with a downloadable ZIP after each batch.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-nano-pink-girls-r1-40-images.zip`, verified 40 JPGs, removed loose local and remote run folders, and kept only the ZIP for download.
+- Outcome: FileBrowser download link is ready; ZIP should be deleted after Stephane confirms download.
+
+## 2026-05-17 — Little Lifely product-first mixed batch ZIP link
+- Trigger: Stephane asked for a 50-image product-first mixed batch with download ZIP.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-nano-product-first-mixed-r1-50-images.zip`, verified 50 JPGs, removed loose local and remote run folders, and kept only the ZIP for download.
+- Outcome: FileBrowser download link is ready; ZIP should be deleted after Stephane confirms download.
+
+## 2026-05-17 — Little Lifely approved-sources batch ZIP link
+- Trigger: Stephane asked for a 50-image batch using only approved source folders.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-nano-approved-sources-r1-50-images.zip`, verified 50 JPGs, removed loose local and remote run folders, and kept only the ZIP for download.
+- Outcome: FileBrowser download link is ready; ZIP should be deleted after Stephane confirms download.
+
+## 2026-05-17 — Little Lifely approved-sources R2 final batch ZIP link
+- Trigger: Stephane asked for a last 50-image batch.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-nano-approved-sources-r2-50-images.zip`, verified 50 JPGs, removed loose local and remote run folders, and kept only the ZIP for download.
+- Outcome: FileBrowser download link is ready; ZIP should be deleted after Stephane confirms download.
+
+## 2026-05-17 — Little Lifely story/motion batch ZIP link
+- Trigger: Stephane asked for a 50-image batch focused on laughter, movement, and story.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-nano-story-motion-r1-50-images.zip`, verified 50 JPGs, removed loose local and remote run folders, and kept only the ZIP for download.
+- Outcome: FileBrowser download link is ready; ZIP should be deleted after Stephane confirms download.
+
+## 2026-05-17 — Little Lifely professional story batch ZIP link
+- Trigger: Stephane asked for a 50-image professional-camera batch based on photography guidelines.
+- Actions: Created `projects/little-lifely-global-expansion/assets/replicate-bakeoff/little-lifely-nano-professional-story-r1-50-images.zip`, verified 50 JPGs, removed loose local and remote run folders, and kept only the ZIP for download.
+- Outcome: FileBrowser download link is ready; ZIP should be deleted after Stephane confirms download.
+
+## 2026-05-19 — Sally access to John's FileBrowser
+- Trigger: Stephane asked to give Sally access to John's workspace FileBrowser from the Little Lifely Sally studio channel.
+- Actions: Added `sallymatthes@googlemail.com` to the Cloudflare Access allow policy for John FileBrowser, created/updated FileBrowser user `sally` with safe daily permissions, stored the generated password only in `/root/.openclaw/credentials/filebrowser.json`, and verified local login returned HTTP 200.
+- Outcome: Sally can pass the Cloudflare email-code gate and log in to John's FileBrowser. Password was not written to workspace docs/logs.
