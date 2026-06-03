@@ -160,3 +160,8 @@
 - Trigger: Stephane asked to give Sally access to John's workspace FileBrowser from the Little Lifely Sally studio channel.
 - Actions: Added `sallymatthes@googlemail.com` to the Cloudflare Access allow policy for John FileBrowser, created/updated FileBrowser user `sally` with safe daily permissions, stored the generated password only in `/root/.openclaw/credentials/filebrowser.json`, and verified local login returned HTTP 200.
 - Outcome: Sally can pass the Cloudflare email-code gate and log in to John's FileBrowser. Password was not written to workspace docs/logs.
+
+## 2026-06-03 — Lifely Hiring OS FileBrowser link correction
+- **Trigger:** Stephane reported the shared Lifely Hiring Claude Design brief link was not working.
+- **Actions:** Verified the file existed; checked `/john-files` and `/filebrowser` routes. Found `/john-files` redirects to `/filebrowser/` and drops the file path. Found direct `/filebrowser/files/...` requires login. Created FileBrowser share via local API using `X-Auth`; first share used wrong internal path `/files/...` and public share 404ed; corrected to `/projects/lifely-hiring-os/CLAUDE_DESIGN_BRIEF.md`.
+- **Outcome:** Working share UI: `https://studio.sfrance.co/filebrowser/share/z8msCQPO`; verified raw markdown: `https://studio.sfrance.co/filebrowser/api/public/dl/z8msCQPO/projects/lifely-hiring-os/CLAUDE_DESIGN_BRIEF.md?inline=true`.

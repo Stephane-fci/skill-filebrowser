@@ -47,3 +47,9 @@ Append new learnings below with today's date.
 - The persistent FileBrowser blue-spinner issue was ultimately caused by `/` being 100% full. Nginx logged `pwritev() /var/lib/nginx/proxy/... failed (28: No space left on device)` while streaming FileBrowser JS assets, and browsers reported `ERR_INCOMPLETE_CHUNKED_ENCODING`.
 - Fix sequence: free safe cache/temp space, then set FileBrowser Nginx route with `proxy_buffering off`, `proxy_request_buffering off`, and `proxy_max_temp_file_size 0` so FileBrowser assets do not depend on nginx disk temp files.
 - Temporary route moves can hide symptoms but do not solve this class of issue. Always check `df -h /` and nginx error logs when browser shows a blank FileBrowser spinner with incomplete chunk errors.
+
+## 2026-06-03 — Share API paths must omit `/files`
+- FileBrowser direct UI routes use `/files/...`, but the share API must be created against the real resource path, e.g. `/projects/foo/file.md`, not `/files/projects/foo/file.md`.
+- Creating a share for `/files/...` can return 200 and list in `/api/shares`, but the public `/share/<hash>` page shows “This location can't be reached.”
+- For urgent sharing, verify both `/api/public/share/<hash>` and the raw download URL before sending.
+- On John, `/john-files` currently redirects to `/filebrowser/` and drops deep paths; use verified `/filebrowser` share links or raw public download links.
