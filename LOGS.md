@@ -165,3 +165,8 @@
 - **Trigger:** Stephane reported the shared Lifely Hiring Claude Design brief link was not working.
 - **Actions:** Verified the file existed; checked `/john-files` and `/filebrowser` routes. Found `/john-files` redirects to `/filebrowser/` and drops the file path. Found direct `/filebrowser/files/...` requires login. Created FileBrowser share via local API using `X-Auth`; first share used wrong internal path `/files/...` and public share 404ed; corrected to `/projects/lifely-hiring-os/CLAUDE_DESIGN_BRIEF.md`.
 - **Outcome:** Working share UI: `https://studio.sfrance.co/filebrowser/share/z8msCQPO`; verified raw markdown: `https://studio.sfrance.co/filebrowser/api/public/dl/z8msCQPO/projects/lifely-hiring-os/CLAUDE_DESIGN_BRIEF.md?inline=true`.
+
+## 2026-06-03 — Lifely Hiring OS Codex ZIP share link
+- Trigger: Stephane asked for the download link to the Codex project package.
+- Actions: Created `projects/lifely-hiring-os-codex.zip`, created FileBrowser share `RXK8CJZz` against `/projects/lifely-hiring-os-codex.zip`, and verified public GET for both share metadata and raw ZIP download returned HTTP 200.
+- Outcome: Shared direct download URL for the ZIP.
