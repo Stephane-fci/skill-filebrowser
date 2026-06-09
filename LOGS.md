@@ -170,3 +170,8 @@
 - Trigger: Stephane asked for the download link to the Codex project package.
 - Actions: Created `projects/lifely-hiring-os-codex.zip`, created FileBrowser share `RXK8CJZz` against `/projects/lifely-hiring-os-codex.zip`, and verified public GET for both share metadata and raw ZIP download returned HTTP 200.
 - Outcome: Shared direct download URL for the ZIP.
+
+## 2026-06-08 11:11 UTC
+- **Trigger:** Stephane asked to inspect John's live OpenClaw auth profile file directly via FileBrowser, not via a redacted copy.
+- **Actions:** Created a separate read-only FileBrowser instance `filebrowser-auth.service` on `127.0.0.1:8086`, rooted exactly at `/root/.openclaw/agents/main/agent`, with base URL `/filebrowser-auth`. Imported only the existing `stephane` FileBrowser user hash and reduced permissions to download-only/no modify/no share/no create/no delete/no execute. Added an Nginx route for `/filebrowser-auth/` without mounting secrets into the shared `/root/clawd` workspace FileBrowser.
+- **Outcome:** Live auth directory is available at `https://studio.sfrance.co/filebrowser-auth/files/auth-profiles.json` using Stephane's existing FileBrowser login. This exposes raw auth material to Stephane only; do not broaden the route or add other users without explicit approval.

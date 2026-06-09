@@ -27,6 +27,17 @@ Passwords live only in `~/.openclaw/credentials/filebrowser.json`. Do not store 
 
 ---
 
+## Sensitive Auth Profiles Viewer
+
+- **URL:** `https://studio.sfrance.co/filebrowser-auth/`
+- **Direct auth profile file:** `https://studio.sfrance.co/filebrowser-auth/files/auth-profiles.json`
+- **Service:** `filebrowser-auth.service`
+- **Port:** `8086` on `127.0.0.1`
+- **Database:** `/etc/filebrowser-auth/filebrowser.db`
+- **Root:** `/root/.openclaw/agents/main/agent`
+- **User:** existing `stephane` FileBrowser login only, imported by hash; permissions reduced to download-only/read-only.
+- **Purpose:** temporary/direct inspection of John's live auth-profile files by Stephane. Do not add other users or broaden root without explicit approval.
+
 ## Fleet Overview
 
 | Agent | URL | Status |
