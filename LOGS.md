@@ -175,3 +175,8 @@
 - **Trigger:** Stephane asked to inspect John's live OpenClaw auth profile file directly via FileBrowser, not via a redacted copy.
 - **Actions:** Created a separate read-only FileBrowser instance `filebrowser-auth.service` on `127.0.0.1:8086`, rooted exactly at `/root/.openclaw/agents/main/agent`, with base URL `/filebrowser-auth`. Imported only the existing `stephane` FileBrowser user hash and reduced permissions to download-only/no modify/no share/no create/no delete/no execute. Added an Nginx route for `/filebrowser-auth/` without mounting secrets into the shared `/root/clawd` workspace FileBrowser.
 - **Outcome:** Live auth directory is available at `https://studio.sfrance.co/filebrowser-auth/files/auth-profiles.json` using Stephane's existing FileBrowser login. This exposes raw auth material to Stephane only; do not broaden the route or add other users without explicit approval.
+
+## 2026-06-15 15:20 UTC — Caesar impeccable skill FileBrowser link
+- **Trigger:** Stephane asked to deploy the `impeccable` skill to Caesar and provide Caesar's FileBrowser link.
+- **Actions:** Copied John's `skills/impeccable` directory to Caesar's visible FileBrowser workspace and to Caesar's active OpenClaw workspace at `/home/lifely-agent/.openclaw/workspace/skills/impeccable`. Verified `openclaw skills info impeccable` on Caesar reports `Visible to model: yes` and `Available as command: yes`.
+- **Outcome:** Caesar runtime skill path is `~/.openclaw/workspace/skills/impeccable/SKILL.md`; FileBrowser-visible link is `https://lifely.sfrance.co/filebrowser/files/skills/impeccable/SKILL.md`.
