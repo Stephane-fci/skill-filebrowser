@@ -180,3 +180,8 @@
 - **Trigger:** Stephane asked to deploy the `impeccable` skill to Caesar and provide Caesar's FileBrowser link.
 - **Actions:** Copied John's `skills/impeccable` directory to Caesar's visible FileBrowser workspace and to Caesar's active OpenClaw workspace at `/home/lifely-agent/.openclaw/workspace/skills/impeccable`. Verified `openclaw skills info impeccable` on Caesar reports `Visible to model: yes` and `Available as command: yes`.
 - **Outcome:** Caesar runtime skill path is `~/.openclaw/workspace/skills/impeccable/SKILL.md`; FileBrowser-visible link is `https://lifely.sfrance.co/filebrowser/files/skills/impeccable/SKILL.md`.
+
+## 2026-06-22 — DTC Airtable import package links
+- Trigger: Stephane asked to return to the full Airtable-style database so he can choose/filter himself.
+- Actions: Generated full CSV import folder and ZIP package under `projects/dtc-brand-opportunity-search/`, verified ZIP and CSV row counts, shared FileBrowser links.
+- Outcome: ZIP available at `/projects/dtc-brand-opportunity-search/dtc-airtable-import-package.zip`; folder at `/projects/dtc-brand-opportunity-search/airtable-import/`.
