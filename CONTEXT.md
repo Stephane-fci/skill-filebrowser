@@ -38,6 +38,17 @@ Passwords live only in `~/.openclaw/credentials/filebrowser.json`. Do not store 
 - **User:** existing `stephane` FileBrowser login only, imported by hash; permissions reduced to download-only/read-only.
 - **Purpose:** temporary/direct inspection of John's live auth-profile files by Stephane. Do not add other users or broaden root without explicit approval.
 
+## Mini-John Workspace Viewer
+
+- **URL:** `https://studio.sfrance.co/filebrowser/mini-john/`
+- **Direct files root:** `https://studio.sfrance.co/filebrowser/mini-john/files/`
+- **Service:** `filebrowser-mini-john.service`
+- **Port:** `8087` on `127.0.0.1`
+- **Database:** `/etc/filebrowser-mini-john/filebrowser.db`
+- **Root:** `/root/clawd/projects/mini-john-agent/agent-workspace`
+- **Users:** reuses the existing John FileBrowser `stephane` and `stephane-admin` credentials from `~/.openclaw/credentials/filebrowser.json`; do not print passwords.
+- **Purpose:** direct browsing/editing of MJ's actual boot workspace without navigating through `/projects/mini-john-agent/agent-workspace` in John's main FileBrowser.
+
 ## Fleet Overview
 
 | Agent | URL | Status |
@@ -48,8 +59,15 @@ Passwords live only in `~/.openclaw/credentials/filebrowser.json`. Do not store 
 | **Lina** | `judes.sfrance.co/lina/filebrowser` | ✅ Live |
 | **Francesca** | `sally.sfrance.co/filebrowser` | ✅ Live |
 | **Sentinelle** | `sentinelle.sfrance.co/filebrowser` | ✅ Live |
-| **Cornelia** | `cornelia.sfrance.co/filebrowser` | ✅ Live |
+| **Cornelia** | `vps.lifely.network/lifely-cc-agent/cornelia-workspace/filebrowser/` | ✅ Canonical; old `cornelia.lifely.network/filebrowser` and `cornelia.sfrance.co/filebrowser` still exist |
 | **Maurice** | `maurice.sfrance.co/filebrowser` | ✅ Live |
 
 Most instances use: Cloudflare Access (email wall) → FileBrowser login → fail2ban.
 **Sentinelle exception:** direct FileBrowser login only, no Cloudflare Access, plus fail2ban.
+
+
+## Cornelia VPS canonical FileBrowser routes
+
+- Cornelia workspace: `https://vps.lifely.network/lifely-cc-agent/cornelia-workspace/filebrowser/` rooted at `/home/cornelia/clawd`, service `filebrowser-cornelia-workspace.service`, safe editable permissions.
+- PO Allocation source: `https://vps.lifely.network/lifely-cc-agent/po-allocation/filebrowser/` rooted at `/opt/lifely-po-allocation/source/apps/lifely-po-allocation`, service `filebrowser-po-allocation.service`, read-only permissions.
+- Route credential note on Cornelia: `/home/cornelia/.openclaw/credentials/filebrowser-vps-routes.json`.

@@ -1,6 +1,11 @@
 # LOGS.md — FileBrowser
 
 ---
+## 2026-07-02 — Mini-John dedicated FileBrowser route
+- Trigger: Stephane asked where MJ's actual files are and requested `https://studio.sfrance.co/filebrowser/mini-john/files`.
+- Actions: Created a separate FileBrowser instance rooted at `/root/clawd/projects/mini-john-agent/agent-workspace`, using `/etc/filebrowser-mini-john/filebrowser.db`, port `8087`, service `filebrowser-mini-john.service`, and base URL `/filebrowser/mini-john`. Added an Nginx route under the existing `studio.sfrance.co` server block and reloaded Nginx.
+- Outcome: `https://studio.sfrance.co/filebrowser/mini-john/files/` returns HTTP 200, the service is active, and a login/API check confirmed the root lists MJ boot files (`AGENTS.md`, `IDENTITY.md`, `RULES.md`, `SUBAGENT-BOOT.md`, etc.).
+
 ## 2026-04-09 — Caesar FileBrowser Access
 - Added `chloe.Lin@lifely.com.au` to the Cloudflare Access reusable allow policy for Caesar FileBrowser.
 - Used Cloudflare Zero Trust API `PUT /accounts/{account_id}/access/policies/{policy_id}` against policy `5f593921-c742-4ffc-86c5-2e5bc776361d`.
@@ -185,3 +190,24 @@
 - Trigger: Stephane asked to return to the full Airtable-style database so he can choose/filter himself.
 - Actions: Generated full CSV import folder and ZIP package under `projects/dtc-brand-opportunity-search/`, verified ZIP and CSV row counts, shared FileBrowser links.
 - Outcome: ZIP available at `/projects/dtc-brand-opportunity-search/dtc-airtable-import-package.zip`; folder at `/projects/dtc-brand-opportunity-search/airtable-import/`.
+
+## 2026-06-25 — Cornelia FileBrowser moved to Lifely hostname
+- Trigger: Stephane asked to set up Cornelia FileBrowser at `cornelia.lifely.network/filebrowser` with access for Stephane, Yun Kai, David, and Monica.
+- Actions: Verified Cornelia already had FileBrowser running on `127.0.0.1:8085` rooted at `/home/cornelia/clawd`; created Cloudflare DNS A record `cornelia.lifely.network -> 178.105.78.233` proxied; updated Cornelia Nginx server_name to include `cornelia.lifely.network`; created Lifely-account Cloudflare Access app for `cornelia.lifely.network/filebrowser` with four allowed emails resolved from Lifely Slack; created/updated FileBrowser `team` login using the same saved password as `stephane`; updated Cornelia credential URL.
+- Outcome: Public URL returns Cloudflare Access 302 from `lifely-network.cloudflareaccess.com`; FileBrowser service active; users are `stephane`, `team`, and `stephane-admin`; `stephane` and `team` passwords match in the credential file. Old `cornelia.sfrance.co/filebrowser` route remains configured separately.
+
+## 2026-06-25 — Fixed Cornelia Lifely hostname Cloudflare 526
+- Trigger: Stephane shared a screenshot showing Cloudflare 526 Invalid SSL certificate for `cornelia.lifely.network/filebrowser`.
+- Root cause: Cornelia Nginx was still serving the old self-signed `cornelia.sfrance.co` certificate for the new Lifely hostname. The `lifely.network` zone uses stricter origin certificate validation, so Cloudflare rejected the origin.
+- Actions: Generated the private key and CSR on Cornelia, issued a Cloudflare Origin CA certificate for `cornelia.lifely.network` from the Lifely Cloudflare account, installed it on Cornelia, split the Nginx server blocks so `cornelia.lifely.network` uses the Lifely Origin CA cert while the old `cornelia.sfrance.co` route keeps its old cert, tested Nginx, and reloaded it.
+- Outcome: Public smoke test for `https://cornelia.lifely.network/filebrowser/` returns Cloudflare Access 302 instead of 526.
+
+## 2026-06-25 — Added shared `vps.lifely.network` FileBrowser routes for Cornelia VPS
+- Trigger: Stephane asked for canonical nested FileBrowser routes under `https://vps.lifely.network/lifely-cc-agent/...` for Cornelia workspace and PO Allocation source.
+- Actions: Created proxied DNS `vps.lifely.network -> 178.105.78.233`; issued and installed a Lifely Cloudflare Origin CA cert for `vps.lifely.network`; created two new FileBrowser services on Cornelia: `filebrowser-cornelia-workspace.service` on `127.0.0.1:8087` rooted at `/home/cornelia/clawd`, and `filebrowser-po-allocation.service` on `127.0.0.1:8088` rooted at `/opt/lifely-po-allocation/source/apps/lifely-po-allocation`; added Nginx routes; created Lifely Cloudflare Access apps for both nested paths with the four-person allowlist; wrote route credential note to `/home/cornelia/.openclaw/credentials/filebrowser-vps-routes.json`.
+- Outcome: Public smoke tests for both nested URLs return Cloudflare Access 302. Origin checks return HTTP 200 for both nested FileBrowser base URLs. Cornelia workspace route uses safe editable permissions; PO Allocation route is read-only.
+
+## 2026-06-30 — Resolved Caesar FileBrowser skill link for Rocket System
+- Trigger: Stephane shared Caesar FileBrowser link `https://lifely.sfrance.co/filebrowser/files/skills/fb-ads-mass-hook-test` in `#lifely-rocket-system` as a relevant system attempt.
+- Actions: Web fetch confirmed the URL is behind Cloudflare Access. Located the skill via SSH on Caesar at `/home/lifely-agent/.openclaw/workspace/skills/fb-ads-mass-hook-test`, copied docs/scripts/references into `projects/lifely-rocket-system/resources/caesar-skills/fb-ads-mass-hook-test/`, excluding generated assets, and created the extraction doc.
+- Outcome: The skill is now a Rocket System source resource. It documents the downstream Meta mass hook-test launcher pattern.
