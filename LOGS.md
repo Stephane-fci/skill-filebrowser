@@ -211,3 +211,8 @@
 - Trigger: Stephane shared Caesar FileBrowser link `https://lifely.sfrance.co/filebrowser/files/skills/fb-ads-mass-hook-test` in `#lifely-rocket-system` as a relevant system attempt.
 - Actions: Web fetch confirmed the URL is behind Cloudflare Access. Located the skill via SSH on Caesar at `/home/lifely-agent/.openclaw/workspace/skills/fb-ads-mass-hook-test`, copied docs/scripts/references into `projects/lifely-rocket-system/resources/caesar-skills/fb-ads-mass-hook-test/`, excluding generated assets, and created the extraction doc.
 - Outcome: The skill is now a Rocket System source resource. It documents the downstream Meta mass hook-test launcher pattern.
+
+## 2026-07-02 — Corrected POA roadmap FileBrowser link
+- **Trigger:** Stephane was rightly frustrated that John shared broken/stale John FileBrowser links for the Lifely POA project roadmap.
+- **Actions:** Verified actual POA FileBrowser route is `https://vps.lifely.network/lifely-cc-agent/po-allocation/filebrowser/` rooted at `/opt/lifely-po-allocation/source/apps/lifely-po-allocation`. Copied the canonical project roadmap from `/root/clawd/projects/lifely-post-purchase-experience/ROADMAP.md` into the POA app root as `ROADMAP.md` and verified it exists remotely.
+- **Outcome:** Clean direct POA FileBrowser link is `https://vps.lifely.network/lifely-cc-agent/po-allocation/filebrowser/files/ROADMAP.md`. Future POA links should use the PO Allocation route, not John's `/filebrowser` or `/john-files` route.
